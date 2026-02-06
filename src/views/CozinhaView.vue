@@ -51,6 +51,13 @@
             <div class="card-header">
               <span class="pedido-numero">#{{ pedido.get('numeroPedido') || '---' }}</span>
               <span class="pedido-mesa">Mesa {{ pedido.get('mesa') }}</span>
+              <span 
+                class="pedido-origem" 
+                :class="pedido.get('origem') === 'whatsapp' ? 'origem-wpp' : 'origem-sistema'"
+                :title="pedido.get('origem') === 'whatsapp' ? 'Pedido via WhatsApp' : 'Pedido via Sistema'"
+              >
+                {{ pedido.get('origem') === 'whatsapp' ? '📱 WPP' : '💻 SIS' }}
+              </span>
               <span class="pedido-time">{{ formatTime(pedido.createdAt) }}</span>
             </div>
             <div class="card-cliente">
@@ -117,6 +124,13 @@
             <div class="card-header">
               <span class="pedido-numero">#{{ pedido.get('numeroPedido') || '---' }}</span>
               <span class="pedido-mesa">Mesa {{ pedido.get('mesa') }}</span>
+              <span 
+                class="pedido-origem" 
+                :class="pedido.get('origem') === 'whatsapp' ? 'origem-wpp' : 'origem-sistema'"
+                :title="pedido.get('origem') === 'whatsapp' ? 'Pedido via WhatsApp' : 'Pedido via Sistema'"
+              >
+                {{ pedido.get('origem') === 'whatsapp' ? '📱 WPP' : '💻 SIS' }}
+              </span>
               <span class="pedido-time">{{ formatTime(pedido.createdAt) }}</span>
             </div>
             <div class="card-cliente">
@@ -179,6 +193,13 @@
             <div class="card-header">
               <span class="pedido-numero">#{{ pedido.get('numeroPedido') || '---' }}</span>
               <span class="pedido-mesa">Mesa {{ pedido.get('mesa') }}</span>
+              <span 
+                class="pedido-origem" 
+                :class="pedido.get('origem') === 'whatsapp' ? 'origem-wpp' : 'origem-sistema'"
+                :title="pedido.get('origem') === 'whatsapp' ? 'Pedido via WhatsApp' : 'Pedido via Sistema'"
+              >
+                {{ pedido.get('origem') === 'whatsapp' ? '📱 WPP' : '💻 SIS' }}
+              </span>
               <span class="pedido-time">{{ formatTime(pedido.createdAt) }}</span>
             </div>
             <div class="card-cliente">
@@ -1268,6 +1289,24 @@ onUnmounted(() => {
   margin-left: auto;
   font-size: 0.75rem;
   color: #888;
+}
+
+.pedido-origem {
+  padding: 2px 8px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.origem-wpp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: white;
+}
+
+.origem-sistema {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .card-cliente {

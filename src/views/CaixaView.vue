@@ -300,6 +300,12 @@
             <div class="pedido-header-mini">
               <span class="pedido-numero">#{{ p.get('numeroPedido') || '---' }}</span>
               <span class="pedido-mesa">Mesa {{ p.get('mesa') }}</span>
+              <span 
+                class="pedido-origem" 
+                :class="p.get('origem') === 'whatsapp' ? 'origem-wpp' : 'origem-sistema'"
+              >
+                {{ p.get('origem') === 'whatsapp' ? '📱' : '💻' }}
+              </span>
               <span :class="'badge badge-' + p.get('status')">{{ p.get('status') }}</span>
             </div>
             <div class="pedido-nome">{{ p.get('nome') }}</div>
@@ -644,6 +650,7 @@ async function criarPedido() {
     novoPedido.set('observacoes', pedido.observacoes)
     novoPedido.set('total', calcularTotal.value)
     novoPedido.set('status', 'pendente')
+    novoPedido.set('origem', 'sistema') // Pedido criado via interface do sistema
 
     await novoPedido.save()
 
@@ -1213,6 +1220,20 @@ select.form-input option {
 .pedido-mesa {
   font-size: 0.85rem;
   color: var(--text-muted);
+}
+
+.pedido-origem {
+  padding: 2px 6px;
+  border-radius: 50px;
+  font-size: 0.7rem;
+}
+
+.origem-wpp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+}
+
+.origem-sistema {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .pedido-nome {

@@ -1,6 +1,9 @@
 // Cloud Code - pedIN
 // Trigger automático para gerar número do pedido
 
+// Origens de pedido válidas
+const ORIGENS_VALIDAS = ['sistema', 'whatsapp'];
+
 Parse.Cloud.beforeSave("Pedido", async (request) => {
   const pedido = request.object;
   
@@ -33,6 +36,18 @@ Parse.Cloud.beforeSave("Pedido", async (request) => {
     pedido.set('status', 'pendente');
   }
   
+  // Define origem padrão como 'sistema' se não for informada
+  // Pedidos via API (REST/Cloud Function) terão origem definida como 'whatsapp'
+  if (!pedido.get('origem')) {
+    pedido.set('origem', 'sistema');
+  }
+  
+  // Valida origem
+  const origem = pedido.get('origem');
+  if (!ORIGENS_VALIDAS.includes(origem)) {
+    throw new Parse.Error(400, `Origem inválida. Valores aceitos: ${ORIGENS_VALIDAS.join(', ')}`);
+  }
+  
   // Valida campos obrigatórios
   if (!pedido.get('nome')) {
     throw new Parse.Error(400, "Nome do cliente é obrigatório");
@@ -47,9 +62,9 @@ Parse.Cloud.beforeSave("Pedido", async (request) => {
   }
 });
 
-// Função para criar pedido via Cloud Function (alternativa)
+// Função para criar pedido via Cloud Function (usada pela API/WhatsApp)
 Parse.Cloud.define("criarPedido", async (request) => {
-  const { nome, telefone, mesa, itens, observacoes, total } = request.params;
+  const { nome, telefone, mesa, itens, observacoes, total, origem } = request.params;
   
   // Validações
   if (!nome) throw new Parse.Error(400, "Nome é obrigatório");
@@ -67,6 +82,10 @@ Parse.Cloud.define("criarPedido", async (request) => {
   pedido.set("total", total || 0);
   pedido.set("status", "pendente");
   
+  // Define origem - padrão é 'whatsapp' para pedidos via API
+  // Se não for informada, assume que veio via WhatsApp/API externa
+  pedido.set("origem", origem || "whatsapp");
+  
   // O número será gerado automaticamente pelo beforeSave
   
   const resultado = await pedido.save(null, { useMasterKey: true });
@@ -75,6 +94,7 @@ Parse.Cloud.define("criarPedido", async (request) => {
     success: true,
     objectId: resultado.id,
     numeroPedido: resultado.get("numeroPedido"),
+    origem: resultado.get("origem"),
     createdAt: resultado.createdAt
   };
 });
