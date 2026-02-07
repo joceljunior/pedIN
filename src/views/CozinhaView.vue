@@ -72,7 +72,7 @@
                 </span>
                 <span v-if="item.sabor" class="item-detalhe">{{ item.sabor }}</span>
                 <span v-if="item.apresentacao" class="item-detalhe">{{ item.apresentacao }} - {{ item.tipo }}</span>
-                <span v-if="item.acompanhamentos && item.acompanhamentos.length" class="item-detalhe">
+                <span v-if="Array.isArray(item.acompanhamentos) && item.acompanhamentos.length" class="item-detalhe">
                   {{ item.acompanhamentos.join(', ') }}
                 </span>
                 <span v-if="item.crepe1" class="item-detalhe">
@@ -145,7 +145,7 @@
                 </span>
                 <span v-if="item.sabor" class="item-detalhe">{{ item.sabor }}</span>
                 <span v-if="item.apresentacao" class="item-detalhe">{{ item.apresentacao }} - {{ item.tipo }}</span>
-                <span v-if="item.acompanhamentos && item.acompanhamentos.length" class="item-detalhe">
+                <span v-if="Array.isArray(item.acompanhamentos) && item.acompanhamentos.length" class="item-detalhe">
                   {{ item.acompanhamentos.join(', ') }}
                 </span>
                 <span v-if="item.crepe1" class="item-detalhe">
@@ -214,7 +214,7 @@
                 </span>
                 <span v-if="item.sabor" class="item-detalhe">{{ item.sabor }}</span>
                 <span v-if="item.apresentacao" class="item-detalhe">{{ item.apresentacao }} - {{ item.tipo }}</span>
-                <span v-if="item.acompanhamentos && item.acompanhamentos.length" class="item-detalhe">
+                <span v-if="Array.isArray(item.acompanhamentos) && item.acompanhamentos.length" class="item-detalhe">
                   {{ item.acompanhamentos.join(', ') }}
                 </span>
                 <span v-if="item.crepe1" class="item-detalhe">
@@ -308,7 +308,7 @@
                   <strong>{{ item.produto }}</strong>
                   <span v-if="item.sabor" class="item-detalhe">{{ item.sabor }}</span>
                   <span v-if="item.apresentacao" class="item-detalhe">{{ item.apresentacao }} - {{ item.tipo }}</span>
-                  <span v-if="item.acompanhamentos && item.acompanhamentos.length" class="item-detalhe">
+                  <span v-if="Array.isArray(item.acompanhamentos) && item.acompanhamentos.length" class="item-detalhe">
                     {{ item.acompanhamentos.join(', ') }}
                   </span>
                   <span v-if="item.crepe1" class="item-detalhe">
@@ -856,7 +856,7 @@ function imprimirPedido(pedido) {
         <div class="item-nome">• ${item.quantidade ? item.quantidade + 'x ' : ''}${item.produto}</div>
         ${item.sabor ? `<div class="item-detalhe">${item.sabor}</div>` : ''}
         ${item.apresentacao ? `<div class="item-detalhe">${item.apresentacao} - ${item.tipo}</div>` : ''}
-        ${item.acompanhamentos && item.acompanhamentos.length ? `<div class="item-detalhe">${item.acompanhamentos.join(', ')}</div>` : ''}
+        ${Array.isArray(item.acompanhamentos) && item.acompanhamentos.length ? `<div class="item-detalhe">${item.acompanhamentos.join(', ')}</div>` : ''}
         ${item.crepe1 ? `<div class="item-detalhe">${item.crepe1} + ${item.crepe2}</div><div class="item-detalhe">${item.bebida}</div>` : ''}
       </div>
     `).join('')}
